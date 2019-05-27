@@ -6,33 +6,29 @@
 #include <unordered_map>
 
 using namespace std;
-vector<vector<string>> groupAnagrams(vector<string>& strs) {
-    vector<vector<string>> res;
-    unordered_map<string, int> hashMap;
-    if (strs.empty()) { return res; }
+int lengthOfLongestSubstring(string s) {
+    if (s.empty()) { return 0; }
 
-    string hashKey;
-    for (string str : strs) {
-        hashKey.clear();
-        for (int i=0; i<26; ++i) {
-            hashKey += "\1";
-        }
+    int hashMap[26];
+    int maxLength = 0;
+    int curLength = 0;
+    for (int i=0; i<26; ++i)  { hashMap[i]=-1; }
 
-        for (int i=0; i<str.size(); ++i) {
-            hashKey[str[i]-'a'] += 1;
-        }
-        if (hashMap.count(hashKey)==0) {
-            hashMap.insert(pair<string, int>(hashKey, res.size()));
-            res.push_back(vector<string>({str}));
+    for (int i=-1, j=0; j<s.size(); ++j) {
+        if (hashMap[s[j]-'a'] <= i) {
+            hashMap[s[j]-'a'] = j;
+            if (++curLength > maxLength) {
+                maxLength = curLength;
+            }
         } else {
-            res[hashMap[hashKey]].push_back(str);
+            i = hashMap[s[j]-'a'];
+            curLength = j - i;
         }
     }
-    return res;
+    return maxLength;
 }
 int main() {
     vector<string> strs;
-    strs.push_back("eat");
-    groupAnagrams(strs);
+    lengthOfLongestSubstring("abcabcbcb");
     return 0;
 }

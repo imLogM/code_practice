@@ -1,27 +1,47 @@
+#include <cstdio>
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include <cstdlib>
+
 using namespace std;
 
-bool shuffle(vector<int>& array) {
-    if (array.empty()) { return true; }
+int partition(vector<int>& array, int lo, int hi) {
+    if (array.empty()) { return -1; }
+    if (lo<0 || lo>=hi) { return -1; }
 
-    srand((unsigned int)time(NULL));
-    for (int i=array.size()-1; i>=0; --i) {
-        int swapIndex = rand() % (i+1);
-        swap(array[i], array[swapIndex]);
+//    srand((unsigned int) time(nullptr));
+//    swap(array[lo], array[rand()%array.size()]);
+
+    int pivot = array[lo];
+    while (lo < hi) {
+        while ( (lo < hi) && array[hi-1] >= pivot) {
+            --hi;
+        }
+        swap(array[lo], array[hi-1]);
+        while ( (lo < hi) && array[lo] <= pivot) {
+            ++lo;
+        }
+        swap(array[lo], array[hi-1]);
     }
-    return true;
+    array[lo] = pivot;
+    return lo;
 }
 
-int main()
-{
-    vector<int> array = {1,2,3,4,5};
-    shuffle(array);
-    for (int v : array) {
-        printf("%d,", v);
+void quickSort(vector<int>& array, int lo, int hi) {
+    if (array.empty()) { return; }
+    if (lo<0 || lo>=hi) { return; }
+
+    int mid = partition(array, lo, hi);
+    quickSort(array, lo, mid);
+    quickSort(array, mid+1, hi);
+}
+
+int main() {
+    vector<int> array = {2,23,6,87,12,11,39};
+
+    quickSort(array, 0, array.size());
+    for (int v:array) {
+        printf("%d, ", v);
     }
-    printf("\n");
     return 0;
 }

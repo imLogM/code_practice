@@ -64,6 +64,6 @@ int main(){
     for (string s:sv) {
         printf("%s, ", s.c_str());
     }
-    
+
     return 0;
 }

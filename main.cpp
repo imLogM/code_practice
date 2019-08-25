@@ -5,63 +5,54 @@
 #include <algorithm>
 #include <cmath>
 #include <climits>
+#include <unordered_map>
 
 using namespace std;
 
-void HeapAdjust(vector<int>& heap, int n, int index) {
-    if (heap.empty() || index>=n || index<0 || (int)heap.size()<n) { return; }
+void split(const std::string& s, std::vector<std::string>& sv, const char delim) {
+    sv.clear();
+    std::istringstream iss(s);
+    std::string temp;
 
-    int lchild = 2*index+1;
-    int rchild = 2*index+2;
-
-    int max = heap[index];
-    int maxIndex = index;
-    if (lchild<n && heap[lchild]>max) {
-        max = heap[lchild];
-        maxIndex = lchild;
-    }
-    if (rchild<n && heap[rchild]>max) {
-        max = heap[rchild];
-        maxIndex = rchild;
-    }
-
-    if (maxIndex != index) {
-        swap(heap[maxIndex], heap[index]);
-        HeapAdjust(heap, n, maxIndex);
-    }
-}
-
-void BuildHeap(vector<int>& heap, int n) {
-    if (heap.empty() || (int)heap.size()<n) { return; }
-    for (int i=(n-2)/2; i>=0; --i) {
-        HeapAdjust(heap, n, i);
-    }
-}
-
-void heapSort(vector<int>& array) {
-    if ((int)(array.size())<=1) { return; }
-
-    BuildHeap(array, (int)array.size());
-    for (int i=(int)array.size()-1; i>=0; --i) {
-        swap(array.front(), array[i]);
-        HeapAdjust(array, i, 0);
-    }
-}
-
-void heapSort2(vector<int>& array) {
-    if ((int)array.size()<=1) { return; }
-
-    make_heap(array.begin(), array.end());
-    for (int i=(int)array.size()-1; i>=0; --i) {
-        pop_heap(array.begin(), array.begin()+i+1);
+    while (std::getline(iss, temp, delim)) {
+        sv.push_back(temp);
     }
 }
 
 int main(){
-    vector<int> array = {8,6,9,4,2,3,2,0, -5, -3};
-    heapSort2(array);
-    for (int num:array) {
-        printf("%d, ", num);
+    int n;
+    cin >> n;
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    vector<string> strVec;
+    string str;
+    for (int i=0; i<n; ++i) {
+        getline(cin, str);
+        strVec.push_back(str);
+    }
+    vector<string> idVec;
+    while (true) {
+        int a, b;
+        getline(cin, str);
+        if (str.empty()) {
+            break;
+        }
+        split(str, idVec, ' ');
+        if (idVec.size()!=2) {
+            continue;
+        }
+        a = stoi(idVec[0]);
+        b = stoi(idVec[1]);
+        a -= 1; b -= 1;
+        if (a<0 || a>=n || b<0 || b>=n) {
+            continue;
+        }
+        int i=0;
+        for ( ; i<(int)(strVec[a].size()) && i<(int)(strVec[b].size()); ++i) {
+            if (strVec[a][i] != strVec[b][i]) {
+                break;
+            }
+        }
+        printf("%d\n", i);
     }
 
     return 0;

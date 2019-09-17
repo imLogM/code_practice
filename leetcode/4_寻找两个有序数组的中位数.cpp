@@ -1,14 +1,22 @@
-#include <cstdio>
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-#include <climits>
-#include <unordered_map>
-#include <unordered_set>
+//给定两个大小为 m 和 n 的有序数组 nums1 和 nums2。
+//
+//请你找出这两个有序数组的中位数，并且要求算法的时间复杂度为 O(log(m + n))。
+//
+//你可以假设 nums1 和 nums2 不会同时为空。
+//
+//示例 1:
+//
+//nums1 = [1, 3]
+//nums2 = [2]
+//
+//则中位数是 2.0
+//示例 2:
+//
+//nums1 = [1, 2]
+//nums2 = [3, 4]
+//
+//则中位数是 (2 + 3)/2 = 2.5
 
-using namespace std;
 
 class Solution {
 public:
@@ -51,12 +59,3 @@ public:
         return 0.5*(topK(nums1, 0, len1, nums2, 0, len2, m1)+topK(nums1, 0, len1, nums2, 0, len2, m2));
     }
 };
-
-int main() {
-    vector<int> nums1({1,3});
-    vector<int> nums2({2});
-    Solution s;
-    cout << s.findMedianSortedArrays(nums1, nums2) << endl;
-
-    return 0;
-}

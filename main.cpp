@@ -10,53 +10,51 @@
 
 using namespace std;
 
-class Solution {
-public:
-    int topK(vector<int>& nums1, int bg1, int ed1, vector<int>& nums2, int bg2, int ed2, int k) {
-        int len1 = ed1-bg1;
-        int len2 = ed2-bg2;
 
-        if (k > len1 + len2 || k <= 0) {
-            cout << "error k\n";
-            return 0;
-        }
+typedef long long ll;
+typedef vector<vector<ll>> matrix;
+const ll MOD = 1e9 + 7;
 
-        if (len1==0) {
-            return nums2[bg2+k-1];
+matrix multiply(matrix & a, matrix & b, ll MOD)
+{
+    matrix c(a.size(), vector<ll>(b[0].size()));
+    for (int i = 0; i < a.size(); i++)
+    {
+        for (int k = 0; k < a[0].size(); k++)
+        {
+            for (int j = 0; j < b[0].size(); j++)
+            {
+                c[i][j] = (c[i][j] + a[i][k] * b[k][j] % MOD) % MOD;
+            }
         }
-        if (len1 > len2) {
-            return topK(nums2, bg2, ed2, nums1, bg1, ed1, k);
-        } else if (k==1) {
-            return min(nums1[bg1], nums2[bg2]);
-        }
-
-        int mid1 = ((len1 > k/2)? k/2 : len1);
-        int mid2 = (k - mid1);
-        if (nums1[bg1+mid1-1] > nums2[bg2+mid2-1]) {
-            return topK(nums1, bg1, ed1, nums2, bg2+mid2, ed2, k-mid2);
-        } else if (nums1[bg1+mid1-1] < nums2[bg2+mid2-1]) {
-            return topK(nums1, bg1+mid1, ed1, nums2, bg2, ed2, k-mid1);
-        } else {
-            return nums1[bg1+mid1-1];
-        }
-
     }
-    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        int len1 = (int)nums1.size();
-        int len2 = (int)nums2.size();
-        if (nums1.empty() && nums2.empty()) { return 0; }
+    return c;
+}
 
-        int m1 = (len1+len2+1) / 2;
-        int m2 = (len1+len2+2) / 2;
-        return 0.5*(topK(nums1, 0, len1, nums2, 0, len2, m1)+topK(nums1, 0, len1, nums2, 0, len2, m2));
+matrix pow(matrix & a, ll n, ll MOD)
+{
+    matrix res(a.size(), vector<ll>(a[0].size()));
+    for (int i = 0; i < a.size(); i++) res[i][i] = 1;
+    while (n > 0)
+    {
+        if (n & 1) res = multiply(res, a, MOD);
+        a = multiply(a, a, MOD);
+        n >>= 1;
     }
-};
+    return res;
+}
 
-int main() {
-    vector<int> nums1({1,3});
-    vector<int> nums2({2});
-    Solution s;
-    cout << s.findMedianSortedArrays(nums1, nums2) << endl;
-
+int main()
+{
+    ll a, b, c, d, n;
+    cin >> a >> b >> c >> d >> n;
+    matrix p(4, vector<ll>(4, 0));
+    p[0][0] = p[0][2] = p[0][3] = 1;
+    p[1][0] = p[2][1] = p[3][2] = 1;
+    matrix q = pow(p, n - 4, MOD);
+    matrix x(4, vector<ll>(1, 0));
+    x[0][0] = d; x[1][0] = c; x[2][0] = b; x[3][0] = a;
+    matrix y = multiply(q, x, MOD);
+    cout << y[0][0] << endl;
     return 0;
 }

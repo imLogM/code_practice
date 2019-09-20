@@ -58,8 +58,8 @@ void heapSort2(vector<int>& array) {
 }
 
 int main(){
-    vector<int> array = {8,6,9,4,2,3,2,0, -5, -3};
-    heapSort2(array);
+    vector<int> array = {2,3,6,4,1,0};
+    heapSort(array);
     for (int num:array) {
         printf("%d, ", num);
     }

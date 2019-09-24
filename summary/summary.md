@@ -223,7 +223,7 @@
 
 - Leetcode 31: 下一个排列
 
-- Leetcode 69: 全排列中的第k个
+- Leetcode 60: 全排列中的第k个
   > 数学公式
 
 - Leetcode 77: 组合

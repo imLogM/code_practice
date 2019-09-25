@@ -1,19 +1,24 @@
-#include <cstdio>
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-#include <climits>
-#include <unordered_map>
-#include <unordered_set>
-#include <stack>
-
-using namespace std;
-
+//删除最小数量的无效括号，使得输入的字符串有效，返回所有可能的结果。
+//
+//说明: 输入可能包含了除 ( 和 ) 以外的字符。
+//
+//示例 1:
+//
+//输入: "()())()"
+//输出: ["()()()", "(())()"]
+//示例 2:
+//
+//输入: "(a)())()"
+//输出: ["(a)()()", "(a())()"]
+//示例 3:
+//
+//输入: ")("
+//输出: [""]
+//
 class Solution {
 public:
     vector<string> removeInvalidParentheses(string s) {
+        // 暴力回溯
         vector<string> results;
         string result;
         getValid(s, results, result, 0);
@@ -43,9 +48,9 @@ public:
         }
 
         if (s[index]=='(' || s[index]==')') {
-            // 加这个字符
-            getValid(s, results, result, index+1);
             // 不加这个字符
+            getValid(s, results, result, index+1);
+            // 加这个字符
             result += s[index];
             getValid(s, results, result, index+1);
             result.pop_back();
@@ -53,6 +58,7 @@ public:
             //普通字符直接加
             result += s[index];
             getValid(s, results, result, index+1);
+            result.pop_back();
         }
     }
 
@@ -72,9 +78,3 @@ public:
         return left==0;
     }
 };
-int main()
-{
-    Solution so;
-    so.removeInvalidParentheses("(a)())()");
-    return 0;
-}
